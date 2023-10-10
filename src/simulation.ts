@@ -13,21 +13,22 @@ console.log('------------------------------------');
 for (let i = 0; i < 1000; i++) {
   const shuffledPopulation = [...population].sort(() => 0.5 - Math.random());
 
-  const [timeConsumers, timeSellers] = [shuffledPopulation.slice(0, 500), shuffledPopulation.slice(500)];
+  // Filter those wanting to consume time based on their spendProbability and their available money
+  const timeConsumers = shuffledPopulation.filter(citizen => Math.random() < citizen.spendProbability && citizen.money >= pricePerHour);
 
-  let successfulTransactions = 0;
+  const timeSellers = shuffledPopulation.filter(citizen => !timeConsumers.includes(citizen));
+
   timeConsumers.forEach(consumer => {
     const hoursWanted = Math.floor(Math.random() * 4) + 1;
 
     for (const seller of timeSellers) {
       if (consumer.consumeTime(seller, hoursWanted, pricePerHour)) {
-        successfulTransactions++;
         break;
       }
     }
   });
 
-  const demandSupplyRatio = timeConsumers.length / (timeSellers.length - successfulTransactions);
+  const demandSupplyRatio = timeConsumers.length / timeSellers.length;
   if (demandSupplyRatio > 1) {
     pricePerHour += 1;
   } else {

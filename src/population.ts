@@ -2,19 +2,22 @@ interface Person {
     name: string;
     money: number;
     timeAvailable: number;
+    spendProbability: number;
     consumeTime(provider: Person, hours: number, pricePerHour: number): boolean;
     sellTime(hours: number, pricePerHour: number): void;
   }
   
-  export class Citizen implements Person {
+export class Citizen implements Person {
     name: string;
     money: number;
     timeAvailable: number;
+    spendProbability: number;
   
     constructor(name: string) {
       this.name = name;
-      this.money = Math.floor(Math.random() * 200);
+      this.money = 1;
       this.timeAvailable = 24;
+      this.spendProbability = Math.random(); // Randomly assigns a spend probability between 0 and 1
     }
   
     consumeTime(provider: Person, hours: number, pricePerHour: number): boolean {
